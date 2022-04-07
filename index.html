@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        header h1 {
+            padding: 2rem 0;
+        }
+        form {
+            position: fixed;
+            display: flex;
+            bottom: 0;
+            padding: 1rem;
+        }
+        input {
+            padding: 1rem;
+            width: 80rem;
+        }
+        button {
+            padding: 1rem;
+            width: 10rem;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1>Group Chat</h1>
+    </header>
+    <div>
+        <h1></h1>
+        <ul id="messages"></ul>
+        <form id="form" action="/">
+            <input id="input" autocomplete="off" placeholder="Type Your Message" />
+            <button>Send</button>
+        </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var username = prompt("What is your name: ")
+        var socket = io()
+        var messages = document.querySelector("ul")
+        var form = document.querySelector("form")
+        var input = document.querySelector("form input")
+
+        form.addEventListener('submit', event => {
+            event.preventDefault()
+            if(input.value) {
+                socket.emit('message', username, input.value)
+                input.value = ''
+            }
+        })
+
+        /*socket.on('id', id => {
+            document.querySelector("h1").textContent = "Your ID is : " + id
+        })*/
+        
+        socket.on('message', (username, msg) => {
+            var elem = document.createElement("li")
+            elem.textContent = username + " : " + msg
+            messages.appendChild(elem)
+        })
+
+    </script>
+</body>
+</html>
