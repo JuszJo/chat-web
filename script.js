@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
 const http = require('http')
-const serve = http.createServer(app)
+const serve = http.createServer(HOST)
 const { Server } = require('socket.io')
 const io = new Server(serve)
+var HOST = location.origin.replace(/^http/, 'ws')
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
