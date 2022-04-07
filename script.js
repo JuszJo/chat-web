@@ -1,10 +1,9 @@
 const express = require('express')
 const app = express()
 const http = require('http')
-const serve = http.createServer(HOST)
+const serve = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(serve)
-var HOST = location.origin.replace(/^http/, 'ws')
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -27,6 +26,6 @@ io.on('connection', socket => {
     })
 })
 
-serve.listen(3000, () => {
+serve.listen(process.env.PORT, () => {
     console.log('http://localhost:3000');
 });
