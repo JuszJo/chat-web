@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1>Group Chat</h1>
+    </header>
+    <div>
+        <main>
+            <ul>
+
+            </ul>
+        </main>
+        <form id="form" action="/">
+            <input id="input" autocomplete="off" placeholder="Type Your Message" autofocus="autofocus" />
+            <button>Send</button>
+        </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var username = prompt("What is your name: ")
+        var socket = io()
+        var ul = document.querySelector("ul")
+        var form = document.querySelector("form")
+        var input = document.querySelector("form input")
+        
+        form.addEventListener('submit', event => {
+            event.preventDefault()
+            if(input.value) {
+                socket.emit('message', username, input.value)
+
+                var li = document.createElement("li")
+                var p = document.createElement("p")
+                
+                p.innerHTML = `${username}: ${input.value}`
+                
+                li.appendChild(p)
+                ul.appendChild(li)
+
+                window.scrollTo(0, document.body.scrollHeight);
+
+                input.value = ''
+            }
+        })
+        
+        socket.on('message', (username, msg) => {
+            var li = document.createElement("li")
+            var p = document.createElement("p")
+            
+            p.innerHTML = `${username}: ${msg}`
+
+            li.style.textAlign = "right"
+            p.style.backgroundColor = "burlywood"
+
+            li.appendChild(p)
+            ul.appendChild(li)
+
+            window.scrollTo(0, document.body.scrollHeight);
+        })
+        
+    </script>
+</body>
+</html>
