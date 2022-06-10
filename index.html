@@ -52,8 +52,11 @@
         socket.on('message', (username, msg) => {
             var li = document.createElement("li")
             var p = document.createElement("p")
-
+            
             p.innerHTML = `${username}: ${msg}`
+
+            li.style.textAlign = "right"
+            p.style.backgroundColor = "burlywood"
 
             li.appendChild(p)
             ul.appendChild(li)
