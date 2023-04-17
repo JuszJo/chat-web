@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const serve = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(serve)
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3005
 
 dotenv.config();
 
@@ -30,5 +30,5 @@ io.on('connection', socket => {
 })
 
 serve.listen(PORT, () => {
-    console.log('http://localhost:3000');
+    console.log(`http://localhost:${PORT}`);
 });
