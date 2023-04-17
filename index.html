@@ -24,19 +24,23 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var username = prompt("What is your name: ")
-        var socket = io()
-        var ul = document.querySelector("ul")
-        var form = document.querySelector("form")
-        var input = document.querySelector("form input")
+        const username = prompt("What is your name: ")
+        const socket = io()
+        const ul = document.querySelector("ul")
+        const form = document.querySelector("form")
+        const input = document.querySelector("form input")
         
         form.addEventListener('submit', event => {
             event.preventDefault()
+            let userObject = {
+                username: username,
+                message: input.value
+            }
             if(input.value) {
-                socket.emit('message', username, input.value)
+                socket.emit('message', userObject)
 
-                var li = document.createElement("li")
-                var p = document.createElement("p")
+                const li = document.createElement("li")
+                const p = document.createElement("p")
                 
                 p.innerHTML = `${username}: ${input.value}`
                 
@@ -50,8 +54,8 @@
         })
         
         socket.on('message', (username, msg) => {
-            var li = document.createElement("li")
-            var p = document.createElement("p")
+            const li = document.createElement("li")
+            const p = document.createElement("p")
             
             p.innerHTML = `${username}: ${msg}`
 

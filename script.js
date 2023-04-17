@@ -14,14 +14,18 @@ app.get('/', (req, res) => {
     app.use('/', express.static(__dirname));
 });
 
-io.on('connection', socket => {
-    var total = io.engine.clientsCount
-    var user = `user${total}`
+function handleIncomingMessage(socket, username, message) {
+    socket.broadcast.emit('message', username, message)
+}
 
-    console.log(user, "Connected")
+io.on('connection', socket => {
+    const total = io.engine.clientsCount
+    const user = `user${total}`
     
-    socket.on('message', (user, msg) => {
-        socket.broadcast.emit('message', user, msg)
+    console.log(user, "Connected")
+        
+    socket.on('message', ({username, message}) => {
+        handleIncomingMessage(socket, username, message)
     })
     
     socket.on('disconnect', reason => {
@@ -32,3 +36,17 @@ io.on('connection', socket => {
 serve.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
 });
+
+
+/* socket.onAny(e => {
+    console.log(e);
+}) */
+
+/* socket.use((e, next) => {
+    handleIncomingMessage(e, socket);
+    next();
+}) */
+
+/* function handleIncomingMessage(e, socket) {
+    socket.broadcast.emit(e[0], e[1].username, e[1].message);
+} */
