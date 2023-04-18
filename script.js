@@ -5,9 +5,9 @@ const dotenv = require('dotenv');
 const serve = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(serve)
-const PORT = process.env.PORT || 3005
-
 dotenv.config();
+
+const PORT = process.env.PORT || 3005
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -20,9 +20,8 @@ function handleIncomingMessage(socket, username, message) {
 
 io.on('connection', socket => {
     const total = io.engine.clientsCount
-    const user = `user${total}`
     
-    console.log(user, "Connected")
+    console.log(`Total Users Connected ${total}`)
         
     socket.on('message', ({username, message}) => {
         handleIncomingMessage(socket, username, message)
