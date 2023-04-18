@@ -1,0 +1,12 @@
+/* socket.onAny(e => {
+    console.log(e);
+}) */
+
+/* socket.use((e, next) => {
+    handleIncomingMessage(e, socket);
+    next();
+}) */
+
+/* function handleIncomingMessage(e, socket) {
+    socket.broadcast.emit(e[0], e[1].username, e[1].message);
+} */

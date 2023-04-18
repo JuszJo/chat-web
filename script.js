@@ -9,14 +9,18 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3005
 
+function handleIncomingMessage(socket, username, message) {
+    socket.broadcast.emit('message', username, message)
+}
+
+function handleOutgoingMessage() {
+    
+}
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
     app.use('/', express.static(__dirname));
 });
-
-function handleIncomingMessage(socket, username, message) {
-    socket.broadcast.emit('message', username, message)
-}
 
 io.on('connection', socket => {
     const total = io.engine.clientsCount
@@ -35,17 +39,3 @@ io.on('connection', socket => {
 serve.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
 });
-
-
-/* socket.onAny(e => {
-    console.log(e);
-}) */
-
-/* socket.use((e, next) => {
-    handleIncomingMessage(e, socket);
-    next();
-}) */
-
-/* function handleIncomingMessage(e, socket) {
-    socket.broadcast.emit(e[0], e[1].username, e[1].message);
-} */
