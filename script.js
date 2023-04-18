@@ -1,10 +1,8 @@
 const express = require('express')
 const app = express()
-const http = require('http')
-const dotenv = require('dotenv');
-const serve = http.createServer(app)
-const { Server } = require('socket.io')
-const io = new Server(serve)
+const io = require('socket.io')
+const dotenv = require('dotenv')
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3005
@@ -13,17 +11,17 @@ function handleIncomingMessage(socket, username, message) {
     socket.broadcast.emit('message', username, message)
 }
 
-function handleOutgoingMessage() {
-    
-}
-
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
     app.use('/', express.static(__dirname));
 });
 
-io.on('connection', socket => {
-    const total = io.engine.clientsCount
+const server = app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
+
+const ws = new io.Server(server)
+
+ws.on('connection', socket => {
+    const total = ws.engine.clientsCount
     
     console.log(`Total Users Connected ${total}`)
         
@@ -35,7 +33,3 @@ io.on('connection', socket => {
         console.log(reason, ": User Disconnected");
     })
 })
-
-serve.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
-});
