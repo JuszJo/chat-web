@@ -10,3 +10,15 @@
 /* function handleIncomingMessage(e, socket) {
     socket.broadcast.emit(e[0], e[1].username, e[1].message);
 } */
+
+
+ws.use((socket, next) => {
+    console.log(socket.handshake.auth);
+    users.push(socket.handshake.auth)
+    /* socket.joshua = [];
+    socket.joshua.push(socket.handshake.auth)
+    console.log(socket.joshua); */
+    console.log(users);
+
+    next();
+})
